@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather app</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap");
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/7e3da112c1.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="myapp">
+        <div class="upper">
+          <div class="container text-center">
+            <div class="row">
+              <div class="col city">
+                <a href="#" onclick="searchCity('Paris');"> Paris </a>
+              </div>
+              <div class="col city">
+                <a href="#" onclick="searchCity('Barcelona');"> Barcelona </a>
+              </div>
+              <div class="col city">
+                <a href="#" onclick="searchCity('Berlin');"> Berlin </a>
+              </div>
+              <div class="col city">
+                <a href="#" onclick="searchCity('Kyiv');"> Kyiv</a>
+              </div>
+              <div class="col city">
+                <a href="#" onclick="searchCity('New York');"> New York</a>
+              </div>
+            </div>
+            <br />
+            <form id="city-search-form">
+              <div class="row">
+                <div class="col-8">
+                  <div class="mb-3">
+                    <input
+                      type="search"
+                      class="form-control"
+                      id="cityName"
+                      placeholder="Enter your city..."
+                    />
+                  </div>
+                </div>
+                <div class="col-1">
+                  <a href="#" id="currentLocIcon">
+                    <i
+                      class="fa-solid fa-location-crosshairs currentLocationIcon"
+                    ></i
+                  ></a>
+                </div>
+                <div class="col-3">
+                  <button type="submit" class="btn btn-primary buttonSearch">
+                    Search
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="middle">
+          <h1 id="currentCity"></h1>
+          <ul>
+            <li><h6 id="current-date">Sunday 15:00</h6></li>
+            <li><h6 id="currentCondition"></h6></li>
+          </ul>
+
+          <div class="row">
+            <div class="col-5">
+              <div class="clearfix">
+                <span id="currentWeather-icon">
+                  <img
+                    src="#S"
+                    alt="Fog"
+                    class="currentWeather-icon float-left"
+                  />
+                </span>
+
+                <span
+                  class="currentTemperature float-left"
+                  id="currentTemperature"
+                ></span>
+                <span class="units">
+                  <a id="celcius" href="#">°C </a>|<a id="fahrenheit" href="#"
+                    >°F</a
+                  ></span
+                >
+              </div>
+            </div>
+
+            <div class="col-3">
+              <ul>
+                <li>Wind: <span id="wind"></span> m/s</li>
+                <li>Humidity: <span id="humidity"></span> %</li>
+                <li>Pressure: <span id="pressure"></span> hPa</li>
+              </ul>
+            </div>
+            <div class="col-4">
+              <img class="cityImage" src="images/krakow.jpg" alt="..." />
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <div class="bottom">
+          <div class="row">
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Mon</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Tue</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Wed</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Thu</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Fri</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-2 card-weather">
+              <div class="card weekday">
+                <img
+                  src="https://openweathermap.org/img/wn/02d.png"
+                  class="card-img-top"
+                  alt="..."
+                />
+                <h5 class="card-title dayName">Sat</h5>
+                <div class="card-body">
+                  <p class="card-text card-temp">+5°/-5°</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
