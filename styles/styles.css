@@ -17,6 +17,18 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.myapp-wrapper {
+  max-width: 800px;
+  margin: 10px auto;
+}
+
+.myapp {
+  background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
+  border: 100px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
 h1 {
   margin: 0;
   font-size: 32px;
@@ -77,19 +89,6 @@ li {
 .buttonSearch:hover {
   cursor: hand;
   color: black;
-}
-
-.myapp {
-  background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
-  border: 100px;
-  padding: 10px;
-  border-radius: 15px;
-  max-width: 800px;
-  margin: 10px auto;
-}
-
-.repo-link-text {
-  text-align: center;
 }
 
 .weekday {
