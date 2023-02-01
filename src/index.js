@@ -49,7 +49,7 @@ let dateNow = document.querySelector("#current-date");
 dateNow.innerHTML = formatDate(currentDate);
 
 function showTemperatureAndData(response) {
-  document.querySelector(".currentTemperature").innerHTML = Math.round(
+  document.querySelector("#currentTemperature").innerHTML = Math.round(
     response.data.main.temp
   );
   document.querySelector("#currentCondition").innerHTML =
@@ -59,16 +59,15 @@ function showTemperatureAndData(response) {
     response.data.wind.speed
   );
   document.querySelector("#pressure").innerHTML = response.data.main.pressure;
-  getIcon(response);
-}
-
-function getIcon(response) {
-  let iconId = response.data.weather[0].icon;
-  let urlIcon = "http://openweathermap.org/img/wn/" + iconId + ".png";
-  document.getElementById("currentWeather-icon").innerHTML =
-    "<img src=" +
-    urlIcon +
-    ' alt="Fog" class="currentWeather-icon float-left" />';
+  document
+    .querySelector("#currentWeather-icon")
+    .setAttribute(
+      "src",
+      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+    );
+  document
+    .querySelector("#currentWeather-icon")
+    .setAttribute("alt", response.data.weather[0].deescription);
 }
 
 //make city name appear from search bar
