@@ -43,15 +43,16 @@ h1 {
 
 .repo-link {
   color: darkblue;
+  text-decoration: none;
 }
 
-a {
+.up-city-link {
   color: black;
   text-decoration: none;
   text-shadow: 5px 5px 10px rgba(11, 11, 11, 0.2);
 }
 
-a:hover {
+.up-city-link:hover {
   color: brown;
 }
 
@@ -114,6 +115,12 @@ li {
   font-weight: 300;
   position: relative;
   top: -32px;
+}
+
+.weather-temperature .active {
+  color: black;
+  cursor: default;
+  text-decoration: none;
 }
 
 .currentWeather-icon {
