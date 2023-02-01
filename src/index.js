@@ -71,6 +71,17 @@ function showTemperatureAndData(response) {
     .setAttribute("alt", response.data.weather[0].deescription);
 }
 
+function showCityImage(city) {
+  let imageUrl = `https://pixabay.com/api/?key=33273023-e823ab237982e9cd10b9697f2&q=${city}&category=places&image_type=photo&pretty=true&safesearch=true&orientation=horizontal`;
+  axios.get(imageUrl).then(displayCityImage);
+}
+
+function displayCityImage(response) {
+  let imageElement = document.querySelector("#city-image");
+  console.log(response.data.hits[0]);
+  imageElement.setAttribute("src", response.data.hits[0].webformatURL);
+}
+
 //make city name appear from search bar
 function changeCity(event) {
   event.preventDefault();
@@ -94,6 +105,7 @@ function showCity(response) {
   celciusLink.classList.add("active");
   fahrenhaitLink.classList.remove("active");
   showTemperatureAndData(response);
+  showCityImage(response.data.name);
 }
 
 let searchForm = document.querySelector("#city-search-form");
