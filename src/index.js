@@ -1,6 +1,7 @@
 //import axios from "axios";
 
 let apiKey = "445905dadb3d2b0c6f1b916c9d0e3860";
+let apiKeySheCodes = "12tea70a83o9aff430b33e548d";
 
 // update current date and time
 let currentDate = new Date();
@@ -79,6 +80,11 @@ function changeCity(event) {
 //window.searchCity =
 function searchCity(city) {
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(url).then(showCity);
+}
+
+function searchCityS(city) {
+  let url = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKeySheCodes}&units=metric`;
   axios.get(url).then(showCity);
 }
 
