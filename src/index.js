@@ -69,6 +69,8 @@ function showTemperatureAndData(response) {
   document
     .querySelector("#currentWeather-icon")
     .setAttribute("alt", response.data.weather[0].deescription);
+
+  getForecast(response.data.coord);
 }
 
 function showCityImage(city) {
@@ -112,7 +114,7 @@ let searchForm = document.querySelector("#city-search-form");
 searchForm.addEventListener("submit", changeCity);
 
 //weather forecast
-function showForecast() {
+function showForecast(response) {
   let forecastElement = document.querySelector("#weather-forecast");
   let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
 
@@ -140,6 +142,12 @@ function showForecast() {
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
   //console.log(forecastHTML);
+}
+
+function getForecast(coordinates) {
+  console.log(coordinates);
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(showForecast);
 }
 
 //temperature conversion
@@ -184,4 +192,3 @@ currentIconLink.addEventListener("click", getCurrPosition);
 
 //Default screen city is Krakow
 searchCity("Krakow");
-showForecast();
