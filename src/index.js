@@ -78,7 +78,7 @@ function showCityImage(city) {
 
 function displayCityImage(response) {
   let imageElement = document.querySelector("#city-image");
-  console.log(response.data.hits[0]);
+  //console.log(response.data.hits[0]);
   imageElement.setAttribute("src", response.data.hits[0].webformatURL);
 }
 
@@ -110,6 +110,37 @@ function showCity(response) {
 
 let searchForm = document.querySelector("#city-search-form");
 searchForm.addEventListener("submit", changeCity);
+
+//weather forecast
+function showForecast() {
+  let forecastElement = document.querySelector("#weather-forecast");
+  let days = ["Thu", "Fri", "Sat", "Sun", "Mon", "Tue"];
+
+  let forecastHTML = `<div class="row">`;
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      ` <div class="col-2 card-weather">
+                <div class="card weekday">
+                  <img
+                    src="https://openweathermap.org/img/wn/02d.png"
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <h5 class="card-title dayName">${day}</h5>
+                  <div class="card-body">
+                    <p class="card-text card-temp weather-forecast-temperatures">
+                    <span class="weather-forecast-temperature-max"> 18° </span>
+                     <span class="weather-forecast-temperature-min"> 12° </span>
+                     </p>
+                  </div>
+                </div>
+              </div>`;
+  });
+  forecastHTML = forecastHTML + `</div>`;
+  forecastElement.innerHTML = forecastHTML;
+  //console.log(forecastHTML);
+}
 
 //temperature conversion
 function showCelcius(event) {
@@ -153,3 +184,4 @@ currentIconLink.addEventListener("click", getCurrPosition);
 
 //Default screen city is Krakow
 searchCity("Krakow");
+showForecast();

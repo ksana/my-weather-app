@@ -142,7 +142,7 @@ li {
 }
 
 .card-temp {
-  font-size: 15px;
+  font-size: 16px;
   text-align: center;
   margin: 0;
 }
@@ -154,4 +154,8 @@ li {
 
 .card-body {
   padding: 8px;
+}
+
+.weather-forecast-temperature-min {
+  opacity: 0.6;
 }
