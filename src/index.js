@@ -82,7 +82,11 @@ function showCityImage(city) {
 function displayCityImage(response) {
   let imageElement = document.querySelector("#city-image");
   //console.log(response.data.hits[0]);
-  imageElement.setAttribute("src", response.data.hits[0].webformatURL);
+  let imgUrl =
+    response?.data?.hits[0]?.webformatURL ??
+    "https://cdn.pixabay.com/photo/2013/03/02/02/41/alley-89197_1280.jpg";
+
+  imageElement.setAttribute("src", imgUrl);
 }
 
 //make city name appear from search bar
