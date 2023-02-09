@@ -87,6 +87,10 @@ li {
   line-height: 1;
 }
 
+li .current-city-date {
+  opacity: 0.6;
+}
+
 .buttonSearch:hover {
   cursor: hand;
   color: black;

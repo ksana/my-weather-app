@@ -3,9 +3,6 @@
 let apiKey = "445905dadb3d2b0c6f1b916c9d0e3860";
 let apiKeySheCodes = "12tea70a83o9aff430b33e548d";
 
-// update current date and time
-let currentDate = new Date();
-
 function formatDate(currentDate) {
   let year = currentDate.getFullYear();
   let date = currentDate.getDate();
@@ -46,10 +43,14 @@ function formatDate(currentDate) {
   return `${month} ${date}, ${year}, ${day}, ${hours}:${minutes}`;
 }
 
-let dateNow = document.querySelector("#current-date");
-dateNow.innerHTML = formatDate(currentDate);
+function showYourCurrentDate() {
+  let currentDate = new Date();
+  let dateNow = document.querySelector("#current-date");
+  dateNow.innerHTML = formatDate(currentDate);
+}
 
 function showTemperatureAndData(response) {
+  showYourCurrentDate();
   celciusTemperature = response.data.main.temp;
   document.querySelector("#currentTemperature").innerHTML =
     Math.round(celciusTemperature);
@@ -121,10 +122,21 @@ function formatDay(timestamp) {
   return days[day];
 }
 
+function showChoosenCityTime(timestamp, timezone) {
+  let date = new Date(timestamp * 1000);
+  let dateInCity = document.querySelector("#current-city-date");
+  dateInCity.innerHTML = formatDate(date);
+  console.log(formatDate(date));
+}
+
 //weather forecast
 function showForecast(response) {
   let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast");
+  let timezone = response.data.timezone_offset - 3600;
+  let timestampCurrent = response.data.current.dt + timezone;
+
+  showChoosenCityTime(timestampCurrent);
 
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
