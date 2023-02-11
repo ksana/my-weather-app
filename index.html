@@ -31,7 +31,7 @@
   <body>
     <div class="container">
       <div class="myapp-wrapper">
-        <div class="myapp">
+        <div class="myapp" id="myapp">
           <div class="upper">
             <div class="container text-center">
               <div class="row">
@@ -39,7 +39,7 @@
                   <a
                     href="#"
                     onclick="searchCity('Dubai');"
-                    class="up-city-link"
+                    class="up-city-link transparent-bg-city"
                   >
                     Dubai
                   </a>
@@ -48,7 +48,7 @@
                   <a
                     href="#"
                     onclick="searchCity('Barcelona');"
-                    class="up-city-link"
+                    class="up-city-link transparent-bg-city"
                   >
                     Barcelona
                   </a>
@@ -57,7 +57,7 @@
                   <a
                     href="#"
                     onclick="searchCity('Taipei');"
-                    class="up-city-link"
+                    class="up-city-link transparent-bg-city"
                   >
                     Taipei
                   </a>
@@ -66,7 +66,7 @@
                   <a
                     href="#"
                     onclick="searchCity('Kyiv');"
-                    class="up-city-link"
+                    class="up-city-link transparent-bg-city"
                   >
                     Kyiv</a
                   >
@@ -75,7 +75,7 @@
                   <a
                     href="#"
                     onclick="searchCity('New York');"
-                    class="up-city-link"
+                    class="up-city-link transparent-bg-city"
                   >
                     New York</a
                   >
@@ -111,7 +111,7 @@
             </div>
           </div>
 
-          <div class="middle">
+          <div class="middle transparent-bg">
             <h1 id="currentCity"></h1>
             <ul>
               <li>
@@ -125,7 +125,7 @@
             </ul>
 
             <div class="row">
-              <div class="col-5">
+              <div class="col-4">
                 <div class="clearfix weather-temperature">
                   <span>
                     <img
@@ -150,16 +150,14 @@
                 </div>
               </div>
 
-              <div class="col-3">
+              <div class="col-3 transparent-bg">
                 <ul>
                   <li>Wind: <span id="wind"></span> m/s</li>
                   <li>Humidity: <span id="humidity"></span> %</li>
                   <li>Pressure: <span id="pressure"></span> hPa</li>
                 </ul>
               </div>
-              <div class="col-4">
-                <img class="cityImage" src="#" alt="" id="city-image" />
-              </div>
+              <div class="col-5"></div>
             </div>
           </div>
           <br />

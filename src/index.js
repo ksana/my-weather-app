@@ -1,7 +1,7 @@
 //import axios from "axios";
 
 let apiKey = "445905dadb3d2b0c6f1b916c9d0e3860";
-let apiKeySheCodes = "12tea70a83o9aff430b33e548d";
+let apiKeySheCodes = "5718f012tea70a83o9aff430b33e548d";
 
 function formatDate(currentDate) {
   let year = currentDate.getFullYear();
@@ -43,40 +43,58 @@ function formatDate(currentDate) {
   return `${month} ${date}, ${year}, ${day}, ${hours}:${minutes}`;
 }
 
+function getForecast(coordinates) {
+  console.log(coordinates);
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?lat=${coordinates.latitude}&lon=${coordinates.longitude}&key=${apiKeySheCodes}&units=metric`;
+  axios.get(apiUrl).then(showForecast);
+}
+
 function showYourCurrentDate() {
   let currentDate = new Date();
   let dateNow = document.querySelector("#current-date");
   dateNow.innerHTML = formatDate(currentDate);
 }
 
+function showChoosenCityTime(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let dateInCity = document.querySelector("#current-city-date");
+  dateInCity.innerHTML = formatDate(date);
+  console.log(formatDate(date));
+}
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function showTemperatureAndData(response) {
   showYourCurrentDate();
-  celciusTemperature = response.data.main.temp;
+  showChoosenCityTime(response.data.time);
+  celciusTemperature = response.data.temperature.current;
   document.querySelector("#currentTemperature").innerHTML =
     Math.round(celciusTemperature);
-  document.querySelector("#currentCondition").innerHTML =
-    response.data.weather[0].main;
-  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  document.querySelector("#currentCondition").innerHTML = capitalizeFirstLetter(
+    response.data.condition.description
+  );
+  document.querySelector("#humidity").innerHTML =
+    response.data.temperature.humidity;
   document.querySelector("#wind").innerHTML = Math.round(
     response.data.wind.speed
   );
-  document.querySelector("#pressure").innerHTML = response.data.main.pressure;
+  document.querySelector("#pressure").innerHTML =
+    response.data.temperature.pressure;
   document
     .querySelector("#currentWeather-icon")
-    .setAttribute(
-      "src",
-      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
-    );
+    .setAttribute("src", `${response.data.condition.icon_url}`);
   document
     .querySelector("#currentWeather-icon")
-    .setAttribute("alt", response.data.weather[0].deescription);
+    .setAttribute("alt", response.data.condition.icon);
 
-  getForecast(response.data.coord);
+  getForecast(response.data.coordinates);
 }
 
 function showCityImage(city) {
   let imageUrl = `https://pixabay.com/api/?key=33273023-e823ab237982e9cd10b9697f2&q=${city}&category=places&image_type=photo&pretty=true&safesearch=true&orientation=horizontal`;
-  axios.get(imageUrl).then(displayCityImage);
+  axios.get(imageUrl).then(displayCityImageAsBackground);
 }
 
 function displayCityImage(response) {
@@ -89,6 +107,16 @@ function displayCityImage(response) {
   imageElement.setAttribute("src", imgUrl);
 }
 
+function displayCityImageAsBackground(response) {
+  let imageElement = document.getElementById("myapp");
+  //console.log(response.data.hits[0]);
+  let imgUrl =
+    response?.data?.hits[0]?.largeImageURL ??
+    "https://cdn.pixabay.com/photo/2013/03/02/02/41/alley-89197_1280.jpg";
+
+  document.getElementById("myapp").style.backgroundImage = `url(${imgUrl})`;
+}
+
 //make city name appear from search bar
 function changeCity(event) {
   event.preventDefault();
@@ -97,22 +125,17 @@ function changeCity(event) {
 
 //window.searchCity =
 function searchCity(city) {
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-  axios.get(url).then(showCity);
-}
-
-function searchCityS(city) {
   let url = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKeySheCodes}&units=metric`;
   axios.get(url).then(showCity);
 }
 
 function showCity(response) {
   document.querySelector("#currentCity").innerHTML =
-    response.data.name + ", " + response.data.sys.country;
+    response.data.city + ", " + response.data.country;
   celciusLink.classList.add("active");
   fahrenhaitLink.classList.remove("active");
   showTemperatureAndData(response);
-  showCityImage(response.data.name);
+  showCityImage(response.data.city);
 }
 
 let searchForm = document.querySelector("#city-search-form");
@@ -126,7 +149,7 @@ function formatDay(timestamp) {
   return days[day];
 }
 
-function showChoosenCityTime(timestamp, timezone) {
+function showChoosenCityTime(timestamp) {
   let date = new Date(timestamp * 1000);
   let dateInCity = document.querySelector("#current-city-date");
   dateInCity.innerHTML = formatDate(date);
@@ -137,37 +160,33 @@ function showChoosenCityTime(timestamp, timezone) {
 function showForecast(response) {
   let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast");
-  let timezone = response.data.timezone_offset - 3600;
-  let timestampCurrent = response.data.current.dt + timezone;
+  //let timezone = response.data.timezone_offset - 3600;
+  //let timestampCurrent = response.data.current.dt + timezone;
 
-  showChoosenCityTime(timestampCurrent);
+  //showChoosenCityTime(timestampCurrent);
 
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
     if (index < 6) {
       forecastHTML =
         forecastHTML +
-        ` <div class="col-2 card-weather">
-                <div class="card weekday">
+        ` <div class="col-2 ">
+                <div class="weekday transparent-bg-less-opacity">
                   <img
-                    src="https://openweathermap.org/img/wn/${
-                      forecastDay.weather[0].icon
-                    }.png"
-                    class="card-img-top"
+                    src=${forecastDay.condition.icon_url}
+                    class="img-top"
                     alt="..."
                   />
-                  <h5 class="card-title dayName">${formatDay(
-                    forecastDay.dt
-                  )}</h5>
-                  <div class="card-body">
-                    <p class="card-text card-temp weather-forecast-temperatures">
+                  <h5 class="dayName">${formatDay(forecastDay.time)}</h5>
+                  <div class="weather-forecast-temperatures">
+              
                     <span class="weather-forecast-temperature-max"> ${Math.round(
-                      forecastDay.temp.max
+                      forecastDay.temperature.maximum
                     )}° </span>
                      <span class="weather-forecast-temperature-min"> ${Math.round(
-                       forecastDay.temp.min
+                       forecastDay.temperature.minimum
                      )}° </span>
-                     </p>
+                  
                   </div>
                 </div>
               </div>`;
@@ -176,12 +195,6 @@ function showForecast(response) {
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
   //console.log(forecastHTML);
-}
-
-function getForecast(coordinates) {
-  console.log(coordinates);
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(showForecast);
 }
 
 //temperature conversion
@@ -214,7 +227,7 @@ fahrenhaitLink.addEventListener("click", showFahrenheit);
 function handlePosition(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let url = `https://api.shecodes.io/weather/v1/current?lat=${lat}&lon=${lon}&key=${apiKeySheCodes}&units=metric`;
   axios.get(url).then(showCity);
 }
 function getCurrPosition() {
