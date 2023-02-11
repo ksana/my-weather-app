@@ -38,7 +38,7 @@
                 <div class="col city">
                   <a
                     href="#"
-                    onclick="searchCity('Dubai');"
+                    onclick="searchCityS('Dubai');"
                     class="up-city-link"
                   >
                     Dubai
@@ -47,7 +47,7 @@
                 <div class="col city">
                   <a
                     href="#"
-                    onclick="searchCity('Barcelona');"
+                    onclick="searchCityS('Barcelona');"
                     class="up-city-link"
                   >
                     Barcelona
@@ -56,7 +56,7 @@
                 <div class="col city">
                   <a
                     href="#"
-                    onclick="searchCity('Taipei');"
+                    onclick="searchCityS('Taipei');"
                     class="up-city-link"
                   >
                     Taipei
@@ -65,7 +65,7 @@
                 <div class="col city">
                   <a
                     href="#"
-                    onclick="searchCity('Kyiv');"
+                    onclick="searchCityS('Kyiv');"
                     class="up-city-link"
                   >
                     Kyiv</a
@@ -74,7 +74,7 @@
                 <div class="col city">
                   <a
                     href="#"
-                    onclick="searchCity('New York');"
+                    onclick="searchCityS('New York');"
                     class="up-city-link"
                   >
                     New York</a
@@ -115,15 +115,11 @@
             <h1 id="currentCity"></h1>
             <ul>
               <li>
-                <small id="current-city-date" class="current-city-date"></small>
-              </li>
-              <li>
-                <i class="fa-solid fa-location-crosshairs"></i>
-                <h8 id="current-date"></h8>
+                <h6 id="current-date"></h6>
               </li>
               <li><h6 id="currentCondition"></h6></li>
             </ul>
-
+            <br />
             <div class="row">
               <div class="col-5">
                 <div class="clearfix weather-temperature">
@@ -159,10 +155,10 @@
               </div>
               <div class="col-4">
                 <img class="cityImage" src="#" alt="" id="city-image" />
+                <small id="current-city-date" class="current-city-date"></small>
               </div>
             </div>
           </div>
-          <br />
 
           <div class="bottom" id="weather-forecast">
             <div class="row"></div>

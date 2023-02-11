@@ -1,7 +1,7 @@
 //import axios from "axios";
 
 let apiKey = "445905dadb3d2b0c6f1b916c9d0e3860";
-let apiKeySheCodes = "12tea70a83o9aff430b33e548d";
+let apiKeySheCodes = "5718f012tea70a83o9aff430b33e548d";
 
 function formatDate(currentDate) {
   let year = currentDate.getFullYear();
@@ -49,29 +49,31 @@ function showYourCurrentDate() {
   dateNow.innerHTML = formatDate(currentDate);
 }
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function showTemperatureAndData(response) {
   showYourCurrentDate();
-  celciusTemperature = response.data.main.temp;
+  celciusTemperature = response.data.temperature.current;
   document.querySelector("#currentTemperature").innerHTML =
     Math.round(celciusTemperature);
-  document.querySelector("#currentCondition").innerHTML =
-    response.data.weather[0].main;
-  document.querySelector("#humidity").innerHTML = response.data.main.humidity;
+  document.querySelector("#currentCondition").innerHTML = capitalizeFirstLetter(
+    response.data.condition.description
+  );
+  document.querySelector("#humidity").innerHTML =
+    response.data.temperature.humidity;
   document.querySelector("#wind").innerHTML = Math.round(
     response.data.wind.speed
   );
-  document.querySelector("#pressure").innerHTML = response.data.main.pressure;
+  document.querySelector("#pressure").innerHTML =
+    response.data.temperature.pressure;
   document
     .querySelector("#currentWeather-icon")
-    .setAttribute(
-      "src",
-      `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
-    );
+    .setAttribute("src", response.data.condition.icon_url);
   document
     .querySelector("#currentWeather-icon")
-    .setAttribute("alt", response.data.weather[0].deescription);
-
-  getForecast(response.data.coord);
+    .setAttribute("alt", response.data.condition.icon);
 }
 
 function showCityImage(city) {
@@ -81,7 +83,6 @@ function showCityImage(city) {
 
 function displayCityImage(response) {
   let imageElement = document.querySelector("#city-image");
-  //console.log(response.data.hits[0]);
   let imgUrl =
     response?.data?.hits[0]?.webformatURL ??
     "https://cdn.pixabay.com/photo/2013/03/02/02/41/alley-89197_1280.jpg";
@@ -92,27 +93,27 @@ function displayCityImage(response) {
 //make city name appear from search bar
 function changeCity(event) {
   event.preventDefault();
-  searchCity(document.querySelector("#cityName").value);
+  searchCityS(document.querySelector("#cityName").value);
 }
 
 //window.searchCity =
-function searchCity(city) {
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-  axios.get(url).then(showCity);
-}
-
 function searchCityS(city) {
   let url = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKeySheCodes}&units=metric`;
-  axios.get(url).then(showCity);
+  axios.get(url).then(showCityS);
 }
 
-function showCity(response) {
-  document.querySelector("#currentCity").innerHTML =
-    response.data.name + ", " + response.data.sys.country;
-  celciusLink.classList.add("active");
-  fahrenhaitLink.classList.remove("active");
-  showTemperatureAndData(response);
-  showCityImage(response.data.name);
+function showCityS(response) {
+  if (response.data.status !== "not_found") {
+    document.querySelector("#currentCity").innerHTML =
+      response.data.city + ", " + response.data.country;
+
+    celciusLink.classList.add("active");
+    fahrenhaitLink.classList.remove("active");
+
+    showTemperatureAndData(response);
+    getForecast(response.data.coordinates);
+    showCityImage(response.data.city);
+  } else alert("City not found");
 }
 
 let searchForm = document.querySelector("#city-search-form");
@@ -126,21 +127,24 @@ function formatDay(timestamp) {
   return days[day];
 }
 
-function showChoosenCityTime(timestamp, timezone) {
+function showChoosenCityTime(timestamp, city) {
   let date = new Date(timestamp * 1000);
   let dateInCity = document.querySelector("#current-city-date");
-  dateInCity.innerHTML = formatDate(date);
-  console.log(formatDate(date));
+  dateInCity.innerHTML =
+    `Current time in ${city}: <div>` + formatDate(date) + `</div>`;
 }
 
 //weather forecast
 function showForecast(response) {
   let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast");
+
   let timezone = response.data.timezone_offset - 3600;
   let timestampCurrent = response.data.current.dt + timezone;
+  let city = document.querySelector("#currentCity").innerHTML;
+  let cityName = city.substring(0, city.indexOf(","));
 
-  showChoosenCityTime(timestampCurrent);
+  showChoosenCityTime(timestampCurrent, cityName);
 
   let forecastHTML = `<div class="row">`;
   forecast.forEach(function (forecastDay, index) {
@@ -175,12 +179,10 @@ function showForecast(response) {
   });
   forecastHTML = forecastHTML + `</div>`;
   forecastElement.innerHTML = forecastHTML;
-  //console.log(forecastHTML);
 }
 
 function getForecast(coordinates) {
-  console.log(coordinates);
-  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=minutely,hourly&appid=${apiKey}&units=metric`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.latitude}&lon=${coordinates.longitude}&exclude=minutely,hourly&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(showForecast);
 }
 
@@ -214,9 +216,10 @@ fahrenhaitLink.addEventListener("click", showFahrenheit);
 function handlePosition(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-  axios.get(url).then(showCity);
+  let url = `https://api.shecodes.io/weather/v1/current?lat=${lat}&lon=${lon}&key=${apiKeySheCodes}&units=metric`;
+  axios.get(url).then(showCityS);
 }
+
 function getCurrPosition() {
   navigator.geolocation.getCurrentPosition(handlePosition);
 }
@@ -225,4 +228,4 @@ let currentIconLink = document.querySelector("#currentLocIcon");
 currentIconLink.addEventListener("click", getCurrPosition);
 
 //Default screen city is Krakow
-searchCity("Krakow");
+searchCityS("Krakow");

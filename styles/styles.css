@@ -7,8 +7,8 @@
 }
 
 .bottom {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 16px;
+  margin-right: 16px;
   position: relative;
   top: -19px;
 }
@@ -23,7 +23,8 @@ body {
 }
 
 .myapp {
-  background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
+  /* background: linear-gradient(to top, #c79081 0%, #dfa579 100%); */
+  background: linear-gradient(-225deg, #cbbacc 0%, #2580b3 100%);
   border: 100px;
   padding: 10px;
   border-radius: 15px;
@@ -53,18 +54,22 @@ h1 {
 }
 
 .up-city-link:hover {
-  color: brown;
+  color: #456281;
 }
 
 .buttonSearch {
-  background: linear-gradient(
+  /* background: linear-gradient(
     110.6deg,
     rgb(184, 142, 252) 2.2%,
     rgb(104, 119, 244) 100.2%
-  );
+  ); */
+  background: linear-gradient(to top, #bdc2e8 0%, #bdc2e8 1%, #e6dee9 100%);
+
   width: 100%;
   left: -20px;
   position: relative;
+  color: black;
+  border: none;
 }
 
 .currentLocationIcon {
@@ -87,17 +92,14 @@ li {
   line-height: 1;
 }
 
-li .current-city-date {
-  opacity: 0.6;
-}
-
 .buttonSearch:hover {
   cursor: hand;
-  color: black;
+  color: #456281;
 }
 
 .weekday {
-  background: linear-gradient(to top, #c79081 0%, #dfa579 100%);
+  /* background: linear-gradient(to top, #c79081 0%, #dfa579 100%); */
+  background: linear-gradient(-225deg, #cbbacc 0%, #2580b3 100%);
   border: transparent;
 }
 
@@ -138,11 +140,20 @@ li .current-city-date {
 }
 
 .cityImage {
-  border-radius: 20px;
+  border-radius: 5px;
   position: relative;
+  top: -55px;
+  left: -27px;
+  width: 254px;
+  height: 168px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.current-city-date {
+  opacity: 0.8;
   top: -50px;
-  width: 200px;
-  height: 150px;
+  position: relative;
+  left: -27px;
 }
 
 .card-temp {
