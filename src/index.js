@@ -81,11 +81,17 @@ function showCityImage(city) {
   axios.get(imageUrl).then(displayCityImage);
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 function displayCityImage(response) {
   let imageElement = document.querySelector("#city-image");
+  let imgCount = response.data.hits.length;
+  //console.log(imgCount);
   let imgUrl =
-    response?.data?.hits[0]?.webformatURL ??
-    "https://cdn.pixabay.com/photo/2013/03/02/02/41/alley-89197_1280.jpg";
+    response?.data?.hits[getRandomInt(imgCount)]?.webformatURL ??
+    "https://cdn.pixabay.com/photo/2017/08/20/17/44/green-2662561_1280.jpg";
 
   imageElement.setAttribute("src", imgUrl);
 }
